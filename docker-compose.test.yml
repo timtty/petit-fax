@@ -1,0 +1,21 @@
+# Test overlay: local trunk simulator that accepts petite_fax's REGISTER
+# and sends it a T.38 fax on demand.
+#
+#   docker compose -f docker-compose.yml -f docker-compose.test.yml up -d
+#   ./test/send-fax.sh
+#
+services:
+  yate:
+    volumes:
+      # shadow the real trunk credentials with test ones
+      - ./test/accfile.test.conf:/etc/yate/accfile.conf:ro
+
+  trunk:
+    build: .
+    container_name: petite-fax-trunk
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:5038:5038"   # rmanager, used by send-fax.sh
+    volumes:
+      - ./test/trunk-conf:/etc/yate:ro
+      - ./test/fax.tiff:/test/fax.tiff:ro

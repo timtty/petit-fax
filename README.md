@@ -28,6 +28,24 @@ View a received fax: `open spool/rx-*.tiff` (macOS Preview reads TIFF-F).
   - `regexroute.conf` — routes every inbound call to `fax/receive/<file>`
 - `spool/` — mounted at `/var/spool/fax`, received TIFFs
 
+## Local T.38 test (no real trunk needed)
+
+`test/` contains a trunk simulator: a second Yate container that accepts
+petite_fax's REGISTER (digest auth via `regfile`) and, on command, calls
+the registered endpoint with an `image/t38`-only offer and transmits
+`test/fax.tiff` through spandsp's T.38 terminal.
+
+```sh
+docker compose -f docker-compose.yml -f docker-compose.test.yml up -d
+./test/send-fax.sh        # originates the fax via the trunk's rmanager port
+# ~20s later:
+open spool/rx-*.tiff
+```
+
+Success looks like `Fax startup succeeded in digital mode` in both
+containers' logs (digital = T.38; `analog mode` would mean G.711
+fallback). Tear down with the same `-f` pair and `down`.
+
 ## NAT note
 
 Media works behind Docker's NAT because most trunks do symmetric RTP
