@@ -1,0 +1,11 @@
+services:
+  yate:
+    build: .
+    container_name: petite-fax
+    restart: unless-stopped
+    ports:
+      - "5060:5060/udp"                 # SIP signaling
+      - "20000-20100:20000-20100/udp"   # RTP + T.38 UDPTL (must match yrtpchan.conf)
+    volumes:
+      - ./conf:/etc/yate:ro
+      - ./spool:/var/spool/fax
