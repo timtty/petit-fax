@@ -61,3 +61,11 @@ box with a public IP.
   provider and a route for the direct DID in `regexroute.conf`.
 - **Phase 3 — SIP over TCP:** add a `[listener tcp5060]` section with
   `type=tcp` in `ysipchan.conf`.
+
+## License
+
+petite_fax's own files (Dockerfile, configs, scripts, docs) are
+[MIT](LICENSE). The Docker image it builds contains third-party software
+under its own licenses — notably [Yate](https://github.com/yatevoip/yate)
+(GPL-2.0) and spandsp (LGPL-2.1) — so if you redistribute a built image,
+those licenses' source-availability terms apply to it.

@@ -1,3 +1,4 @@
 spool/*
 !spool/.gitkeep
 conf/accfile.conf
+test/*.pdf
